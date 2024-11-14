@@ -40,7 +40,12 @@ class LandingPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(
+                  setlists.isEmpty? const Text("Please add a set to proceed",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.0,
+                  ),
+                  ): SizedBox(
                     height: MediaQuery.of(context).size.width*.65,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,

@@ -24,11 +24,12 @@ class MyApp extends StatelessWidget {
           create: (context) => FlashcardBloc(),
         ),
         BlocProvider(
-          create: (context) => FlashcardsetBloc()..add(LoadFlashCardSets()),
+          create: (context) => FlashcardsetBloc()..add(const LoadFlashCardSets()),
         ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
+        
         theme: ThemeData(
           // This is the theme of your application.
           //
@@ -47,6 +48,9 @@ class MyApp extends StatelessWidget {
           // tested with just a hot reload.
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
+          // brightness: Brightness.dark,
+          
+          
         ),
         home: LandingPage(),
       ),
