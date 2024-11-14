@@ -4,6 +4,8 @@ import 'package:flashcard/models/flashcard_model.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
 
+import '../models/flashcardset_model.dart';
+
 part 'flashcard_event.dart';
 part 'flashcard_state.dart';
 
@@ -16,6 +18,7 @@ class FlashcardBloc extends Bloc<FlashcardEvent, FlashcardState> {
     on<AddFlashcard>(_onAddFlashcard);
     on<UpdateFlashcard>(_onUpdateFlashcard);
     on<DeleteFlashcard>(_onDeleteFlashcard);
+  
   }
 
   Future<void> _onLoadFlashcards(
@@ -60,4 +63,8 @@ class FlashcardBloc extends Bloc<FlashcardEvent, FlashcardState> {
       emit(FlashcardError("Failed to delete flashcard"));
     }
   }
+
+
+
+  
 }

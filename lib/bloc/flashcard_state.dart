@@ -15,6 +15,8 @@ class FlashcardLoaded extends FlashcardState {
   List<Object> get props => [flashcards];
 }
 
+
+
 class FlashcardError extends FlashcardState {
   final String message;
 

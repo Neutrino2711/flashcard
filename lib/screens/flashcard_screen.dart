@@ -9,19 +9,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 
 import '../models/flashcard_model.dart';
+import '../widgets/flashcard.dart';
 
 
-class FlashcardApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => FlashcardBloc()..add(LoadFlashcards(setId: 0)),
-      child: FlashcardScreen(),
-    );
-  }
-}
 
 class FlashcardScreen extends StatelessWidget {
+
+  const FlashcardScreen({required this.setId});
+
+    final int setId;
 
    void _showEditFlashcardDialog(BuildContext context, Flashcard flashcard) {
     final TextEditingController questionController = TextEditingController(text: flashcard.question);
@@ -31,15 +27,26 @@ class FlashcardScreen extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Edit Flashcard"),
+          backgroundColor: Color(0xFF242730),
+          title: Text("Edit Flashcard",
+          style: TextStyle(
+            color: Colors.white,
+          ),
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
+                style: TextStyle(
+                  color: Colors.white
+                ),
                 controller: questionController,
                 decoration: InputDecoration(labelText: 'Question'),
               ),
               TextField(
+                style: TextStyle(
+                  color: Colors.white
+                ),
                 controller: answerController,
                 decoration: InputDecoration(labelText: 'Answer'),
               ),
@@ -58,11 +65,11 @@ class FlashcardScreen extends StatelessWidget {
                   id: flashcard.id,
                   question: questionController.text,
                   answer: answerController.text,
-                  setId: 0
+                  setId: setId
                 );
 
                 // Dispatch the update event
-                context.read<FlashcardBloc>().add(UpdateFlashcard(flashcard:  updatedFlashcard,setId: 0));
+                context.read<FlashcardBloc>().add(UpdateFlashcard(flashcard:  updatedFlashcard,setId: setId));
                 Navigator.pop(context);
               },
               child: Text("Save"),
@@ -76,7 +83,15 @@ class FlashcardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Flashcards"),
+      backgroundColor: Color(0xFF242730),
+      appBar: AppBar(
+        backgroundColor: Color(0xFF242730),
+        foregroundColor: Colors.white,
+        title: Text("Flashcards",
+        style: TextStyle(
+          color: Colors.white,
+        ),
+        ),
       // actions: [
       //   ElevatedButton(onPressed: (){
       //     context.read<FlashcardBloc>().add(LoadFlashcards(setId: 0));
@@ -91,11 +106,15 @@ class FlashcardScreen extends StatelessWidget {
           } else if (state is FlashcardLoaded) {
             List<Flashcard> flashcards = state.flashcards;
            return Center(
-  child: Builder(
-  builder: (context) {
-    if (flashcards.isEmpty) {
-      return const Center(child: Text("No Flash Cards"));
-    } else if (flashcards.length == 1) {
+        child: Builder(
+        builder: (context) {
+          if (flashcards.isEmpty) {
+      return const Center(child: Text("No Flash Cards",
+      style: TextStyle(
+        color: Colors.white
+      ),
+      ));
+          } else if (flashcards.length == 1) {
       return  Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
             child: Align(
@@ -107,22 +126,23 @@ class FlashcardScreen extends StatelessWidget {
                 onDoubleTap: () {
                   context
                       .read<FlashcardBloc>()
-                      .add(DeleteFlashcard(id: flashcards.first.id!, setId: 0));
+                      .add(DeleteFlashcard(id: flashcards.first.id!, setId: setId));
                 },
                 child: FlipCard(
                   front: FlashcardView(
                     text: flashcards[0].question,
-                    color: Colors.redAccent,
+                    color: Colors.amberAccent,
+                    
                   ),
                   back: FlashcardView(
                     text: flashcards[0].answer,
-                    color: Colors.blueAccent,
+                    color: Colors.cyanAccent,
                   ),
                 ),
               ),
             ),
           );
-    } else {
+          } else {
       return CardSwiper(
         cardBuilder: (context, index, x, y) {
           return GestureDetector(
@@ -130,13 +150,14 @@ class FlashcardScreen extends StatelessWidget {
               _showEditFlashcardDialog(context, flashcards[index]);
             },
             child: FlipCard(
+              
               front: FlashcardView(
                 text: flashcards[index].question,
-                color: Colors.redAccent,
+                color: Colors.amberAccent,
               ),
               back: FlashcardView(
                 text: flashcards[index].answer,
-                color: Colors.blueAccent,
+                color: Colors.cyanAccent,
               ),
             ),
           );
@@ -145,16 +166,24 @@ class FlashcardScreen extends StatelessWidget {
           if (direction == CardSwiperDirection.bottom) {
             context
                 .read<FlashcardBloc>()
-                .add(DeleteFlashcard(id: flashcards[currentIndex!].id!, setId: 0));
+                .add(DeleteFlashcard(id: flashcards[previousIndex].id!, setId: setId));
+
+            ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Flashcard with ID ${flashcards[previousIndex].id} deleted'),
+        duration: const Duration(seconds: 2), // Duration for which the Snackbar will be visible
+      ),
+    );
+               
           }
           return true;
         },
         numberOfCardsDisplayed: 2,
         cardsCount: flashcards.length,
       );
-    }
-  },),);
-
+          }
+        },),);
+      
           } else if (state is FlashcardError) {
             return Center(child: Text(state.message));
           }
@@ -164,7 +193,7 @@ class FlashcardScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-            Navigator.push(context,MaterialPageRoute(builder: (context) => CreateFlashCard() ));
+            Navigator.push(context,MaterialPageRoute(builder: (context) => CreateFlashCard(setId: setId,) ));
         },
       ),
     );
@@ -173,36 +202,3 @@ class FlashcardScreen extends StatelessWidget {
 
 
 
-
-class FlashcardView extends StatelessWidget {
-  final String text;
-  final Color color;
-
-  FlashcardView({required this.text, required this.color});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 300,
-      width: 300,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text(
-            text,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
-    );
-  }
-}

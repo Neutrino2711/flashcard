@@ -81,10 +81,10 @@ class DatabaseHelper {
       join(dbPath, 'flashcards.db'),
       onCreate: (db, version) {
         db.execute(
-          'CREATE TABLE flashcard_sets(id INTEGER PRIMARY KEY, title TEXT)',
+          'CREATE TABLE flashcard_sets(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT)',
         );
         return db.execute(
-          'CREATE TABLE flashcards(id INTEGER PRIMARY KEY, question TEXT, answer TEXT, set_id INTEGER, FOREIGN KEY(set_id) REFERENCES flashcard_sets(id))',
+          'CREATE TABLE flashcards(id INTEGER PRIMARY KEY AUTOINCREMENT, question TEXT, answer TEXT, set_id INTEGER, FOREIGN KEY(set_id) REFERENCES flashcard_sets(id))',
         );
       },
       version: 1,

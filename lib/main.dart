@@ -1,5 +1,7 @@
 import 'package:flashcard/bloc/flashcard_bloc.dart';
+import 'package:flashcard/bloc/flashcardset_bloc.dart';
 import 'package:flashcard/database/database_helper.dart';
+import 'package:flashcard/screens/landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,8 +18,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => FlashcardBloc()..add(LoadFlashcards(setId: 0)),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => FlashcardBloc(),
+        ),
+        BlocProvider(
+          create: (context) => FlashcardsetBloc()..add(LoadFlashCardSets()),
+        ),
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
@@ -39,7 +48,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: FlashcardScreen(),
+        home: LandingPage(),
       ),
     );
   }
