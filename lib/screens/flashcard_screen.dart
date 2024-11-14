@@ -77,11 +77,11 @@ class FlashcardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Flashcards"),
-      actions: [
-        ElevatedButton(onPressed: (){
-          context.read<FlashcardBloc>().add(LoadFlashcards(setId: 0));
-        }, child: Text("Reload"))
-      ],
+      // actions: [
+      //   ElevatedButton(onPressed: (){
+      //     context.read<FlashcardBloc>().add(LoadFlashcards(setId: 0));
+      //   }, child: Text("Reload"))
+      // ],
       ),
       
       body: BlocBuilder<FlashcardBloc, FlashcardState>(
@@ -90,31 +90,71 @@ class FlashcardScreen extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (state is FlashcardLoaded) {
             List<Flashcard> flashcards = state.flashcards;
-            return Center(
-              child: CardSwiper(cardBuilder: (context,index,x,y ) {
-                
-                return GestureDetector(
-                  onLongPress: () {
-                    _showEditFlashcardDialog(context, flashcards[index]);
-                  },
-                  child: FlipCard(
-                    front: FlashcardView(text: flashcards[index].question, color: Colors.redAccent), 
-                    back: FlashcardView(text: flashcards[index].answer, color: Colors.blueAccent),
-                    ),
-                );
-                
-              
-              },
-              onSwipe: (previousIndex, currentIndex, direction) {
-                if(direction == CardSwiperDirection.bottom)
-                {
-                    context.read<FlashcardBloc>().add(DeleteFlashcard(id: currentIndex!, setId: 0));
-                }
-                return true;
-              },
-               cardsCount: flashcards.length),
-            );
-           
+           return Center(
+  child: Builder(
+  builder: (context) {
+    if (flashcards.isEmpty) {
+      return const Center(child: Text("No Flash Cards"));
+    } else if (flashcards.length == 1) {
+      return  Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: GestureDetector(
+                onLongPress: () {
+                  _showEditFlashcardDialog(context, flashcards[0]);
+                },
+                onDoubleTap: () {
+                  context
+                      .read<FlashcardBloc>()
+                      .add(DeleteFlashcard(id: flashcards.first.id!, setId: 0));
+                },
+                child: FlipCard(
+                  front: FlashcardView(
+                    text: flashcards[0].question,
+                    color: Colors.redAccent,
+                  ),
+                  back: FlashcardView(
+                    text: flashcards[0].answer,
+                    color: Colors.blueAccent,
+                  ),
+                ),
+              ),
+            ),
+          );
+    } else {
+      return CardSwiper(
+        cardBuilder: (context, index, x, y) {
+          return GestureDetector(
+            onLongPress: () {
+              _showEditFlashcardDialog(context, flashcards[index]);
+            },
+            child: FlipCard(
+              front: FlashcardView(
+                text: flashcards[index].question,
+                color: Colors.redAccent,
+              ),
+              back: FlashcardView(
+                text: flashcards[index].answer,
+                color: Colors.blueAccent,
+              ),
+            ),
+          );
+        },
+        onSwipe: (previousIndex, currentIndex, direction) {
+          if (direction == CardSwiperDirection.bottom) {
+            context
+                .read<FlashcardBloc>()
+                .add(DeleteFlashcard(id: flashcards[currentIndex!].id!, setId: 0));
+          }
+          return true;
+        },
+        numberOfCardsDisplayed: 2,
+        cardsCount: flashcards.length,
+      );
+    }
+  },),);
+
           } else if (state is FlashcardError) {
             return Center(child: Text(state.message));
           }

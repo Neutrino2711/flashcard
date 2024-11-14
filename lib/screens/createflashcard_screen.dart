@@ -68,7 +68,7 @@ class CreateFlashCard extends StatelessWidget {
                     // autofocus: true,
                     showCursor: true,
                     decoration: const InputDecoration(
-                      hintText: 'Start typing here ..',
+                      hintText: 'question..',
                       border: InputBorder.none,
                     ),
                       
@@ -89,7 +89,7 @@ class CreateFlashCard extends StatelessWidget {
                     // autofocus: true,
                     showCursor: true,
                     decoration: const InputDecoration(
-                      hintText: 'Start answer here ..',
+                      hintText: 'answer ..',
                       border: InputBorder.none,
                     ),
                       
@@ -110,7 +110,7 @@ class CreateFlashCard extends StatelessWidget {
                     // autofocus: true,
                     showCursor: true,
                     decoration: const InputDecoration(
-                      hintText: 'Start id here ..',
+                      hintText: 'set id..',
                       border: InputBorder.none,
                     ),
                       
