@@ -22,7 +22,7 @@ class FlashcardBloc extends Bloc<FlashcardEvent, FlashcardState> {
       LoadFlashcards event, Emitter<FlashcardState> emit) async {
     emit(FlashcardLoading());
     try {
-      final flashcardsData = await databaseHelper.getFlashcards();
+      final flashcardsData = await databaseHelper.getFlashcardsBySet(event.setId);
       final flashcards = flashcardsData.map((e) => Flashcard.fromMap(e)).toList();
       emit(FlashcardLoaded(flashcards));
     } catch (e) {
@@ -34,7 +34,8 @@ class FlashcardBloc extends Bloc<FlashcardEvent, FlashcardState> {
       AddFlashcard event, Emitter<FlashcardState> emit) async {
     try {
       await databaseHelper.insertFlashcard(event.flashcard.toMap());
-      add(LoadFlashcards()); // Reload the flashcards after adding
+      
+      add(LoadFlashcards(setId: event.setId)); // Reload the flashcards after adding
     } catch (e) {
       emit(FlashcardError("Failed to add flashcard"));
     }
@@ -44,7 +45,7 @@ class FlashcardBloc extends Bloc<FlashcardEvent, FlashcardState> {
       UpdateFlashcard event, Emitter<FlashcardState> emit) async {
     try {
       await databaseHelper.updateFlashcard(event.flashcard.toMap());
-      add(LoadFlashcards()); // Reload the flashcards after updating
+      add(LoadFlashcards(setId: event.setId)); // Reload the flashcards after updating
     } catch (e) {
       emit(FlashcardError("Failed to update flashcard"));
     }
@@ -54,7 +55,7 @@ class FlashcardBloc extends Bloc<FlashcardEvent, FlashcardState> {
       DeleteFlashcard event, Emitter<FlashcardState> emit) async {
     try {
       await databaseHelper.deleteFlashcard(event.id);
-      add(LoadFlashcards()); // Reload the flashcards after deleting
+      add(LoadFlashcards(setId: event.setId)); // Reload the flashcards after deleting
     } catch (e) {
       emit(FlashcardError("Failed to delete flashcard"));
     }
