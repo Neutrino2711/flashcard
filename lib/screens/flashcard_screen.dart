@@ -28,7 +28,7 @@ class FlashcardScreen extends StatelessWidget {
       builder: (context) {
         return AlertDialog(
           backgroundColor: Color(0xFF242730),
-          title: Text("Edit Flashcard",
+          title: const Text("Edit Flashcard",
           style: TextStyle(
             color: Colors.white,
           ),
@@ -37,18 +37,18 @@ class FlashcardScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white
                 ),
                 controller: questionController,
-                decoration: InputDecoration(labelText: 'Question'),
+                decoration: const InputDecoration(labelText: 'Question'),
               ),
               TextField(
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white
                 ),
                 controller: answerController,
-                decoration: InputDecoration(labelText: 'Answer'),
+                decoration: const InputDecoration(labelText: 'Answer'),
               ),
             ],
           ),
@@ -57,7 +57,7 @@ class FlashcardScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text("Cancel"),
+              child:const Text("Cancel"),
             ),
             ElevatedButton(
               onPressed: () {
@@ -68,11 +68,11 @@ class FlashcardScreen extends StatelessWidget {
                   setId: setId
                 );
 
-                // Dispatch the update event
+                
                 context.read<FlashcardBloc>().add(UpdateFlashcard(flashcard:  updatedFlashcard,setId: setId));
                 Navigator.pop(context);
               },
-              child: Text("Save"),
+              child:const Text("Save"),
             ),
           ],
         );
@@ -87,7 +87,7 @@ class FlashcardScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Color(0xFF242730),
         foregroundColor: Colors.white,
-        title: Text("Flashcards",
+        title: const Text("Flashcards",
         style: TextStyle(
           color: Colors.white,
         ),
@@ -187,11 +187,11 @@ class FlashcardScreen extends StatelessWidget {
           } else if (state is FlashcardError) {
             return Center(child: Text(state.message));
           }
-          return Center(child: Text("No flashcards found"));
+          return const Center(child: Text("No flashcards found"));
         },
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () {
             Navigator.push(context,MaterialPageRoute(builder: (context) => CreateFlashCard(setId: setId,) ));
         },

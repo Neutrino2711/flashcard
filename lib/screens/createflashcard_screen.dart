@@ -39,12 +39,12 @@ class CreateFlashCard extends StatelessWidget {
                       Flashcard flashCard = Flashcard(question: questionController.text, answer: answerController.text, setId: setId);
 
                       context.read<FlashcardBloc>().add(AddFlashcard(flashcard: flashCard, setId: setId));
-                      // Clear the fields and close the modal
+                      
                       setIdController.clear();
                       questionController.clear();
                       answerController.clear();
                     
-                    // context.read<PostListBloc>().add(GetPostListEvent());
+                    
                      Navigator.pop(context);
               }
               else 
@@ -71,21 +71,21 @@ class CreateFlashCard extends StatelessWidget {
                     controller: questionController,
                     // keyboardType: TextInputType.multiline,
                     // autofocus: true,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white
                     ),
                     showCursor: true,
                     decoration: const InputDecoration(
                       hintText: 'Question',
                        border: OutlineInputBorder(
-                          // Adds border around the TextFormField
+                          
                           borderSide: BorderSide(
                             color: Colors.transparent
                           ),
-      borderRadius: BorderRadius.all(Radius.circular(10)), // Optional: round the corners
+      borderRadius: BorderRadius.all(Radius.circular(10)), 
     ),),
                       
-                    // maxLines: null,
+                    
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Required!!';
@@ -107,8 +107,8 @@ class CreateFlashCard extends StatelessWidget {
                     decoration: const InputDecoration(
                       hintText: 'Answer',
                       
-                       border: OutlineInputBorder(  // Adds border around the TextFormField
-      borderRadius: BorderRadius.all(Radius.circular(10)), // Optional: round the corners
+                       border: OutlineInputBorder(  
+      borderRadius: BorderRadius.all(Radius.circular(10)), 
     ),
                     ),
                       

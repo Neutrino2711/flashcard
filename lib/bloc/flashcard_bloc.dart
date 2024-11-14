@@ -4,7 +4,7 @@ import 'package:flashcard/models/flashcard_model.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
 
-import '../models/flashcardset_model.dart';
+
 
 part 'flashcard_event.dart';
 part 'flashcard_state.dart';
@@ -38,7 +38,7 @@ class FlashcardBloc extends Bloc<FlashcardEvent, FlashcardState> {
     try {
       await databaseHelper.insertFlashcard(event.flashcard.toMap());
       
-      add(LoadFlashcards(setId: event.setId)); // Reload the flashcards after adding
+      add(LoadFlashcards(setId: event.setId)); 
     } catch (e) {
       emit(FlashcardError("Failed to add flashcard"));
     }
@@ -48,7 +48,7 @@ class FlashcardBloc extends Bloc<FlashcardEvent, FlashcardState> {
       UpdateFlashcard event, Emitter<FlashcardState> emit) async {
     try {
       await databaseHelper.updateFlashcard(event.flashcard.toMap());
-      add(LoadFlashcards(setId: event.setId)); // Reload the flashcards after updating
+      add(LoadFlashcards(setId: event.setId));
     } catch (e) {
       emit(FlashcardError("Failed to update flashcard"));
     }
@@ -58,7 +58,7 @@ class FlashcardBloc extends Bloc<FlashcardEvent, FlashcardState> {
       DeleteFlashcard event, Emitter<FlashcardState> emit) async {
     try {
       await databaseHelper.deleteFlashcard(event.id);
-      add(LoadFlashcards(setId: event.setId)); // Reload the flashcards after deleting
+      add(LoadFlashcards(setId: event.setId)); 
     } catch (e) {
       emit(FlashcardError("Failed to delete flashcard"));
     }

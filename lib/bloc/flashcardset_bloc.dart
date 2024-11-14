@@ -34,7 +34,7 @@ class FlashcardsetBloc extends Bloc<FlashcardsetEvent, FlashcardsetState> {
     try{
       await databaseHelper.insertFlashcardSet(event.flashcardSet.toMap());
       
-      add(LoadFlashCardSets()); 
+      add(const LoadFlashCardSets()); 
     }
     catch(e)
     {

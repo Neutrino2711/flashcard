@@ -9,13 +9,13 @@ sealed class FlashcardsetEvent extends Equatable {
 
 class LoadFlashCardSets extends FlashcardsetEvent{
 
-  LoadFlashCardSets();
+  const LoadFlashCardSets();
 }
 
 class AddFlashCardSets extends FlashcardsetEvent{
 
   final FlashcardSet flashcardSet;
 
-  AddFlashCardSets({required this.flashcardSet});
+ const AddFlashCardSets({required this.flashcardSet});
 
 }

@@ -14,11 +14,11 @@ final class FlashcardsetLoading extends FlashcardsetState {}
 final class FlashcardsetLoaded extends FlashcardsetState {
    final List<FlashcardSet> flashcardsets;
 
-  FlashcardsetLoaded({required this.flashcardsets});
+ const FlashcardsetLoaded({required this.flashcardsets});
 }
 
 final class FlashcardsetError extends FlashcardsetState {
   final String error;
 
-  FlashcardsetError({required this.error});
+ const FlashcardsetError({required this.error});
 }
